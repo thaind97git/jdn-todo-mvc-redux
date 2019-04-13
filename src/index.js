@@ -6,13 +6,13 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducers from './reducers/index';
 
-import AppTodo from './containers/AppTodo';
+import AppTodoContainer from './containers/AppTodo.Container';
 
 const store = createStore(reducers);
 
 ReactDOM.render(
   <Provider store={store}>
-    <AppTodo />
+    <AppTodoContainer />
   </Provider>, document.getElementById('root')
 )
 

@@ -5,12 +5,13 @@ import './Header.css'
 import TickImg from '../../images/tick.svg';
 class Header extends Component {
     render() {
-        const { onClickAll, keyUpEnter, todoItems } = this.props;
+        const { onClickAll, keyUpEnter, filterTodo, defaultStatus } = this.props;
+        console.log(filterTodo(defaultStatus).some(x => !x.isComplete))
         return(
             <div id="header">
                 <img 
                     title="check all" 
-                    className={classNames("",{ "isOpacity": () => todoItems.some(x => !x.isComplete)} )} 
+                    className={classNames("",{ "isOpacity": filterTodo(defaultStatus).some(x => !x.isComplete)} )} 
                     alt="" 
                     onClick={() => onClickAll()} 
                     src={TickImg} 

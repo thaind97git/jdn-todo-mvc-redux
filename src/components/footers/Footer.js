@@ -5,11 +5,11 @@ import './Footer.css'
 
 class Footer extends Component {
     render() {
-        const { todoItems, defaultStatus, statusEnums, onGetStatus, onClearCompleted } = this.props;
+        const { todoItems, defaultStatus, statusEnums, onGetStatus, onClearCompleted, filterTodo } = this.props;
         return(
             <div id="Footer">
                 <div id="number">
-                    {todoItems.length} items left
+                    {filterTodo(defaultStatus).length} items left
                 </div>
                 <div id="status">
                 {

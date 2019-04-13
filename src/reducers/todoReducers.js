@@ -99,6 +99,25 @@ const todos = (state = initialState, action) => {
             }
             return newState;
         }
+        case todoTypes.FILTER_TODO: {
+            const todoItems = state.todoItems;
+            switch (action.status) {
+                case 1:
+                    return state 
+                case 2:
+                    return {
+                        ...state,
+                        todoItems: [...todoItems].filter(q => q.isComplete === false)
+                    }
+                case 3:
+                    return {
+                        ...state,
+                        todoItems: [...todoItems].filter(q => q.isComplete === true)
+                    }
+                default:
+                    return state 
+            }
+        }
         default: return state
     }
 }

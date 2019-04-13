@@ -39,3 +39,10 @@ export function getStatus(status) {
         status: status
     }
 }
+
+export function filterTodo(status) {
+    return {
+        type: todoTypes.FILTER_TODO,
+        status: status
+    }
+}

@@ -8,7 +8,20 @@ import TodoList from '../components/todolists/TodoList';
 import Header from '../components/headers/Header';
 import Footer from '../components/footers/Footer';
 
-class AppTodo extends Component {
+class AppTodoContainer extends Component {
+    filterTodo = (status) => {
+        const todoItems = this.props.state.todoItems;
+        switch (status) {
+            case 1:
+                return [...todoItems]
+            case 2:
+                return [...todoItems].filter(q => q.isComplete === false);
+            case 3:
+                return [...todoItems].filter(q => q.isComplete === true);
+            default:
+                return [...todoItems]
+        }
+    }
     render() {
         const { state, actions } = this.props;
         return(
@@ -16,17 +29,19 @@ class AppTodo extends Component {
                 <h1 id="App-title">Todos MVC</h1>
                 <div id="App-main">
                     <Header 
-                        todoItems = {state.todoItems}
                         onClickAll = {() => actions.clickAll()}
                         keyUpEnter = {(event) => actions.keyUpEnter(event)}
+                        filterTodo = {(status) => this.filterTodo(status)}
+                        defaultStatus = {state.defaultStatus}
                     />
                     <TodoList 
-                        todoItems = {state.todoItems}
                         onItemClicked = {(item) => actions.changeComplete(item)}
                         onDeleteItem = {(id_item) => actions.deleteTodo(id_item)}
+                        filterTodo = {(status) => this.filterTodo(status)}
                         defaultStatus = {state.defaultStatus}
                     />
                     <Footer 
+                        filterTodo = {(status) => this.filterTodo(status)}
                         todoItems = {state.todoItems}
                         defaultStatus = {state.defaultStatus}
                         statusEnums = {state.statusEnums}
@@ -49,4 +64,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps) (AppTodo);
+export default connect(mapStateToProps, mapDispatchToProps) (AppTodoContainer);
