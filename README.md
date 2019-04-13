@@ -13,7 +13,7 @@ You must have [Git](https://github.com) and package manager [Npm](https://nodejs
 Get the code
 
 ```
-git clone https://github.com/thaind97git/jdn-todo-mvc-reactjs.git
+git clone https://github.com/thaind97git/jdn-todo-mvc-redux.git
 
 cd {workspace}
 ```
