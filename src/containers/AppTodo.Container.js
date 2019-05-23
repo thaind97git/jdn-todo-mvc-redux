@@ -9,6 +9,11 @@ import Header from '../components/headers/Header';
 import Footer from '../components/footers/Footer';
 
 class AppTodoContainer extends Component {
+
+    componentWillMount() {
+        this.props.actions.fetchTodo()
+    }
+
     filterTodo = (status) => {
         const todoItems = this.props.state.todoItems;
         switch (status) {
@@ -24,18 +29,20 @@ class AppTodoContainer extends Component {
     }
     render() {
         const { state, actions } = this.props;
+        const isAllComplete = state.todoItems.every(t => t.isComplete);
         return(
             <div className="App">
                 <h1 id="App-title">Todos MVC</h1>
                 <div id="App-main">
                     <Header 
-                        onClickAll = {() => actions.clickAll()}
+                        isAllComplete = {isAllComplete}
+                        onClickAll = {(isAllComplete) => actions.clickAll(isAllComplete)}
                         keyUpEnter = {(event) => actions.keyUpEnter(event)}
                         filterTodo = {(status) => this.filterTodo(status)}
                         defaultStatus = {state.defaultStatus}
                     />
                     <TodoList 
-                        onItemClicked = {(item) => actions.changeComplete(item)}
+                        onItemClicked = {(id_item) => actions.changeComplete(id_item)}
                         onDeleteItem = {(id_item) => actions.deleteTodo(id_item)}
                         filterTodo = {(status) => this.filterTodo(status)}
                         defaultStatus = {state.defaultStatus}

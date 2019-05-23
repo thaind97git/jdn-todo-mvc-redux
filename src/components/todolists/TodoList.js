@@ -7,14 +7,15 @@ class TodoList extends Component {
         return(
             <div className="TodoList">
             {
-                (filterTodo(defaultStatus)).map((item) => {
-                    return <TodoItem 
-                            key={ item.id }
+                (filterTodo(defaultStatus)).map((item) => 
+                    <span key={item._id}>
+                        <TodoItem 
                             item={ item }
-                            onItemClicked={(item) => onItemClicked(item) }
+                            onItemClicked={(id_item) => onItemClicked(id_item) }
                             onDeleteItem={(id_item) => onDeleteItem(id_item) }
-                            />
-                })
+                        />
+                    </span>
+                )
             }
             </div>
         );

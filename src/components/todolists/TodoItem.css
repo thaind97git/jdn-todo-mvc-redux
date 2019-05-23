@@ -18,7 +18,7 @@
     margin-left: 10px;
     word-break: break-all;
     margin: 13px 2px;
-    max-width: 82%;
+    max-width: 78%;
     
 }
 .TodoItems .check-img {
@@ -44,4 +44,17 @@
 
 .TodoItems .cancel-img.active {
     visibility: visible
+}
+
+.TodoItems .edit-img {
+    position: absolute;
+    right: 45px;
+    cursor: pointer;
+}
+
+.TodoItems .edit-input {
+    width: 78%;
+    position: absolute;
+    left: 9%;
+    padding: 15px 0;
 }
