@@ -49,6 +49,9 @@ class AppTodoContainer extends Component {
                         onClearCompleted = {() => actions.clearCompleted()}
                     />
                 </div>
+                <div>
+                    <a style={{textDecoration: 'none', color: '#f77f7f'}} href="https://github.com/thaind97git">Created by thaind97git</a>
+                </div>
             </div>
         );
     }

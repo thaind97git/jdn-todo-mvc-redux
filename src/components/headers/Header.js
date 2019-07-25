@@ -6,7 +6,6 @@ import TickImg from '../../images/tick.svg';
 class Header extends Component {
     render() {
         const { onClickAll, keyUpEnter, filterTodo, defaultStatus } = this.props;
-        console.log(filterTodo(defaultStatus).some(x => !x.isComplete))
         return(
             <div id="header">
                 <img 

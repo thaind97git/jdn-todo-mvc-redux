@@ -37,8 +37,28 @@ body{
   position: relative;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
 }
-
-
+@media only screen and (max-width: 580px) {
+  #App-main {
+    background: #fff;
+    width: 90%;
+    margin: 0 20px 40px 20px;
+    position: relative;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+  }
+  #number {
+    width: 100%;
+    position: relative !important;
+    margin: 5px 0 !important;
+  }
+  #clear {
+    position: relative !important;
+    margin: 12px;
+    right: 0px;
+    bottom: 0;
+    text-decoration: none;
+    padding: 0 0 10px 0;
+  }
+}
 
 #App-body {
   margin: auto;

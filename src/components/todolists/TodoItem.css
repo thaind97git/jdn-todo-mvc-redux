@@ -45,3 +45,23 @@
 .TodoItems .cancel-img.active {
     visibility: visible
 }
+
+.edit-item-input {
+    padding: 10px;
+    border: 1px solid #f3d9d9
+}
+
+.button-save {
+    background-color: #f3d9d9;
+    border: none;
+    padding: 6px 24px;
+    border-radius: 4px;
+    position: relative;
+    margin-left: 60%;
+    cursor: pointer;
+    outline: none
+}
+.button-save:hover {
+    opacity: .8;
+    transition: all 0.3s
+}
