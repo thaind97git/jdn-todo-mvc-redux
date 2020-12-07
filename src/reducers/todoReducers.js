@@ -1,127 +1,118 @@
-import { todoTypes } from '../constants/action.type';
-import { combineReducers } from 'redux';
+import { todoTypes } from "../constants/action.type";
+import LocalStorageService from "../services/LocalStorageService";
+import { TODO_ACTIVE, TODO_ALL, TODO_COMPLETED } from "../enums/todoStatus";
 
-import LocalStorageService from '../services/LocalStorageService';
+const key = "jdn-todo-mvc-redux";
+let todoLocalStorage = LocalStorageService.getItem(key) || [];
 
-const key = 'jdn-todo-mvc-reactjs';
-let todoLocalStorage = LocalStorageService.getItem(key) ? LocalStorageService.getItem(key) : [];
-
-// const a = [{"id": 0, "title":"item 1","isComplete":true},{"id": 1, "title":"item 2","isComplete":false},{"id": 2, "title":"item 3","isComplete":false}]
-// LocalStorageService.setItem(key, a)
 const initialState = {
-    todoItems: todoLocalStorage || [],
-    statusEnums: [
-        { title: 'All', status: 1 },
-        { title: 'Active', status: 2 },
-        { title: 'Complete', status: 3 }
-    ],
-    defaultStatus: 1
-}
+  todoItems: todoLocalStorage || [],
+  statusEnums: [
+    { title: "All", status: TODO_ALL },
+    { title: "Active", status: TODO_ACTIVE },
+    { title: "Complete", status: TODO_COMPLETED },
+  ],
+  defaultStatus: TODO_ALL,
+};
 
-const todos = (state = initialState, action) => {
-    switch (action.type) {
-        case todoTypes.DELETE_TODO: {
-            const newState = {
-                ...state,
-                todoItems: [...state.todoItems].filter(item => item.id !== action.id)
-            }
-            LocalStorageService.setItem(key, newState.todoItems);
-            return newState;
-        }
-        case todoTypes.CHANGE_COMPLETE: {
-            const item = action.item;
-            const todoItems = state.todoItems;
-            const index = state.todoItems.indexOf(item);
-            const newState = {
-                ...state,
-                todoItems: [
-                    ...todoItems.slice(0, index),
-                    {
-                        ...item,
-                        isComplete: !item.isComplete
-                    },
-                    ...todoItems.slice(index + 1)
-                ]
-            }
-            LocalStorageService.setItem(key, newState.todoItems);
-            return newState;
-        }
-        case todoTypes.CLICK_ALL: {
-            const isAllComplete = state.todoItems.every(t => t.isComplete);
-            const todoTmp = [...state.todoItems];
-            todoTmp.forEach(e => e.isComplete = !isAllComplete);
-            const newState = {
-                ...state, 
-                todoItems: todoTmp
-            }
-            LocalStorageService.setItem(key, newState.todoItems);
-            return newState;
-        }
-            
-        case todoTypes.KEY_UP_ENTER: {
-            const event = action.event;
-            if (event.keyCode === 13) {
-                let text = event.target.value.trim();
-                if (!text || text === '') {
-                    return state;
-                } else {
-                    const newState = {
-                        ...state,
-                        todoItems: [
-                            {
-                                id: state.todoItems.length === 0 ? 0 : state.todoItems.length,
-                                title: text,
-                                isComplete: false
-                            },
-                            ...state.todoItems
-                        ]
-                    }
-
-                    LocalStorageService.setItem(key, newState.todoItems);
-                    event.target.value = '';
-                    return newState;
-                }
-            }
-            return state;
-        }
-        case todoTypes.CLEAR_COMPLETED: {
-            const newState = {
-                ...state,
-                todoItems: state.todoItems.filter(q => q.isComplete === false )
-            }
-            LocalStorageService.setItem(key, newState.todoItems);
-            return newState;
-        }
-        case todoTypes.GET_STATUS: {
-            const newState = {
-                ...state,
-                defaultStatus: action.status
-            }
-            return newState;
-        }
-        case todoTypes.FILTER_TODO: {
-            const todoItems = state.todoItems;
-            switch (action.status) {
-                case 1:
-                    return state 
-                case 2:
-                    return {
-                        ...state,
-                        todoItems: [...todoItems].filter(q => q.isComplete === false)
-                    }
-                case 3:
-                    return {
-                        ...state,
-                        todoItems: [...todoItems].filter(q => q.isComplete === true)
-                    }
-                default:
-                    return state 
-            }
-        }
-        default: return state
+export default (state = initialState, action) => {
+  const { type, payload = {} } = action || {};
+  const { id, status, event = {}, item = {} } = payload;
+  switch (type) {
+    case todoTypes.DELETE_TODO: {
+      const newState = {
+        ...state,
+        todoItems: [...state.todoItems].filter((item) => item.id !== id),
+      };
+      LocalStorageService.setItem(key, newState.todoItems);
+      return newState;
     }
-}
+    case todoTypes.CHANGE_COMPLETE: {
+      const todoItems = state.todoItems;
+      const index = state.todoItems.indexOf(item);
+      const newState = {
+        ...state,
+        todoItems: [
+          ...todoItems.slice(0, index),
+          {
+            ...item,
+            isComplete: !item.isComplete,
+          },
+          ...todoItems.slice(index + 1),
+        ],
+      };
+      LocalStorageService.setItem(key, newState.todoItems);
+      return newState;
+    }
+    case todoTypes.CLICK_ALL: {
+      const isAllComplete = state.todoItems.every((t) => t.isComplete);
+      const todoTmp = [...state.todoItems];
+      todoTmp.forEach((e) => (e.isComplete = !isAllComplete));
+      const newState = {
+        ...state,
+        todoItems: todoTmp,
+      };
+      LocalStorageService.setItem(key, newState.todoItems);
+      return newState;
+    }
 
-export default combineReducers({
-    todos
-})
+    case todoTypes.KEY_UP_ENTER: {
+      if (event.keyCode === 13) {
+        let text = event.target.value.trim();
+        if (!text || text === "") {
+          return state;
+        } else {
+          const newState = {
+            ...state,
+            todoItems: [
+              {
+                id: state.todoItems?.length || 0,
+                title: text,
+                isComplete: false,
+              },
+              ...state.todoItems,
+            ],
+          };
+
+          LocalStorageService.setItem(key, newState.todoItems);
+          event.target.value = "";
+          return newState;
+        }
+      }
+      return state;
+    }
+    case todoTypes.CLEAR_COMPLETED: {
+      const newState = {
+        ...state,
+        todoItems: state.todoItems.filter((q) => q.isComplete === false),
+      };
+      LocalStorageService.setItem(key, newState.todoItems);
+      return newState;
+    }
+    case todoTypes.GET_STATUS: {
+      const newState = {
+        ...state,
+        defaultStatus: status,
+      };
+      return newState;
+    }
+    case todoTypes.FILTER_TODO: {
+      let todoItems = [...state.todoItems];
+      switch (status) {
+        case 1:
+          break;
+        case 2:
+          todoItems = todoItems.filter((q) => q.isComplete === false);
+          break;
+        case 3:
+          todoItems = todoItems.filter((q) => q.isComplete === true);
+          break;
+        default:
+          return state;
+      }
+      return todoItems;
+    }
+    default:
+      return state;
+  }
+};
